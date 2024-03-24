@@ -10,7 +10,7 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Long id;
+    private Integer id;
 
     @Column(name="car_no")
     private String carNo;
@@ -48,11 +48,11 @@ public class Business {
     @Column(name="driver_share")
     private Integer driverShare;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
