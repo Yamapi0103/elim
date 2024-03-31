@@ -5,6 +5,8 @@ import com.example.elim.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/business")
 @RestController
 public class BusinessController {
@@ -48,5 +50,10 @@ public class BusinessController {
     public Business read(@PathVariable Integer id){
         Business model = businessDao.findById(id).orElse(null);
         return model;
+    }
+
+    @GetMapping("/list")
+    public List<Business> list(){
+        return businessDao.findAll();
     }
  }
