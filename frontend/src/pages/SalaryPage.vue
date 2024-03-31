@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-import { getList } from '../api/business';
+import { getList } from 'src/api/business';
 defineOptions({
   name: 'SalaryPage',
 });
