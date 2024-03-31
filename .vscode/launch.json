@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ElimApplication<elim>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.elim.ElimApplication",
+      "projectName": "elim",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
