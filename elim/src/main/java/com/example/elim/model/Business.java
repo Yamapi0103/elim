@@ -1,5 +1,6 @@
 package com.example.elim.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class Business {
     private String carNo;
 
     @Column(name="date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @Column(name="route")

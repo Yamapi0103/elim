@@ -1,11 +1,14 @@
 package com.example.elim.service;
 
 import com.example.elim.dao.BusinessDao;
+import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,6 +55,22 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Business findById(Integer id) {
         return businessDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Business> findByFilter(BusinessFilter filter) {
+        String carNo = filter.getCarNo();
+        String orderer = filter.getOrderer();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String sDate = sdf.format(filter.getStartDate());
+        String eDate = sdf.format(filter.getEndDate());
+
+        if (!StringUtils.isBlank(carNo)) {
+            return businessDao.findByCarNoAndDate(carNo, sDate, eDate);
+        } else if (!StringUtils.isBlank(orderer)) {
+            return businessDao.findByOrdererAndDate(orderer, sDate, eDate);
+        }
+        return new ArrayList<Business>();
     }
 }
 

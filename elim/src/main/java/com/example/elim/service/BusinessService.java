@@ -1,6 +1,7 @@
 package com.example.elim.service;
 
 import com.example.elim.dao.BusinessDao;
+import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,6 @@ public interface BusinessService {
     List<Business> list();
 
     Business findById(Integer id);
+
+    List<Business> findByFilter(BusinessFilter filter);
 }

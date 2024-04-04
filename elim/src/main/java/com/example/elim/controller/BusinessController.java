@@ -1,6 +1,6 @@
 package com.example.elim.controller;
 
-import com.example.elim.dao.BusinessDao;
+import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
 import com.example.elim.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +49,10 @@ public class BusinessController {
     @GetMapping("/list")
     public List<Business> list(){
         return businessService.list();
+    }
+
+    @PostMapping("/findByFilter")
+    public List<Business> findByFilter(@RequestBody BusinessFilter filter){
+        return businessService.findByFilter(filter);
     }
  }
