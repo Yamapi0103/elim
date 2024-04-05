@@ -8,18 +8,15 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
-import { getList } from 'src/api/business';
+import { useBusinessStore } from 'src/stores/business';
+import { storeToRefs } from 'pinia';
 defineOptions({
   name: 'SalaryPage',
 });
 
-const list = ref([]);
-
-onBeforeMount(async () => {
-  const { data } = await getList();
-  list.value = data;
-});
+const businessStore = useBusinessStore();
+const { list } = storeToRefs(businessStore);
+businessStore.getList();
 
 const columns = [
   {

@@ -1,19 +1,34 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
+import { ref } from 'vue';
+export const getBusiness = (id: number) => api.get(`business/${id}`);
 
-export const useCounterStore = defineStore('business', {
-  state: () => ({
-    counter: 0
-  }),
+interface Business {
+  id: number;
+  carNo: string;
+  date: string;
+  route: string;
+  fare: number;
+  extraCash: number;
+  finalOrder: string;
+  tip: number | null;
+  taxes: number | null;
+  orderer: string;
+  reimbursement: string;
+  memo: string;
+  driverShare: number | null;
+}
 
-  getters: {
-    doubleCount (state) {
-      return state.counter * 2;
-    }
-  },
+export const useBusinessStore = defineStore('business', () => {
+  const list = ref<Business[]>([]);
 
-  actions: {
-    increment () {
-      this.counter++;
-    }
-  }
+  const getList = async () => {
+    const { data } = await api.get('business/list');
+    list.value = data;
+  };
+
+  return {
+    list,
+    getList,
+  };
 });
