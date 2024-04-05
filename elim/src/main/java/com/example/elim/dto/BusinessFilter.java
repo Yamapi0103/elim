@@ -1,7 +1,7 @@
 package com.example.elim.dto;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
 
 import java.util.Date;
 
@@ -11,11 +11,11 @@ public class BusinessFilter {
 
     private String orderer;
 
-    //@NonNull
+    @NotNull(message = "請輸入起始日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    //@NonNull
+    @NotNull(message = "請輸入結束日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
