@@ -3,7 +3,7 @@ import { api } from 'src/boot/axios';
 import { ref } from 'vue';
 export const getBusiness = (id: number) => api.get(`business/${id}`);
 
-interface Business {
+export interface Business {
   id: number;
   carNo: string;
   date: string;
@@ -27,8 +27,13 @@ export const useBusinessStore = defineStore('business', () => {
     list.value = data;
   };
 
+  const update = async (data: Business) => {
+    const { id } = data;
+    await api.put(`business/${id}`, data);
+  };
   return {
     list,
     getList,
+    update,
   };
 });
