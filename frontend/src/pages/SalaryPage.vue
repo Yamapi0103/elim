@@ -215,10 +215,9 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
 import { QTableColumn } from 'quasar';
 import { Business, useBusinessStore } from 'src/stores/business';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import dayjs from 'dayjs';
 defineOptions({
   name: 'SalaryPage',
@@ -227,10 +226,10 @@ defineOptions({
 const businessStore = useBusinessStore();
 const localList = ref<Business[]>([]);
 const selected = ref<Business[]>([]);
-const { list } = storeToRefs(businessStore);
 businessStore.getList();
-watch(list, (value) => {
-  localList.value = value;
+
+businessStore.$subscribe((_mutation, state) => {
+  localList.value = state.list;
 });
 
 const hasSelected = computed(() => selected.value.length > 0);
