@@ -51,6 +51,6 @@ public class BusinessDao {
         sorts.add(new Sort.Order(Sort.Direction.ASC,"carNo"));
         Pageable pageable = PageRequest.of(pageNum, pigeSize, Sort.by(sorts));
 
-        return (Page<Business>) businessRepository.findAll(spec, pageable);
+        return businessRepository.findAll(spec, pageable);
     }
 }

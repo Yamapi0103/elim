@@ -1,10 +1,12 @@
 package com.example.elim.controller;
 
 import com.example.elim.dto.BusinessFilter;
+import com.example.elim.dto.ResponsePageList;
 import com.example.elim.model.Business;
 import com.example.elim.service.BusinessService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,10 +54,12 @@ public class BusinessController {
         return businessService.list();
     }
 
-    @PostMapping("/findByFilter")
-    public List<Business> findByFilter(@Valid @RequestBody BusinessFilter filter
+    @PostMapping("/listPageByFilter")
+    public ResponsePageList listPageByFilter(@Valid @RequestBody BusinessFilter filter
             , @RequestParam int pageNum, @RequestParam int pigeSize){
-        return businessService.findByFilter(filter, pageNum, pigeSize);
+
+        Page<Business> page = businessService.listPageByFilter(filter, pageNum, pigeSize);
+        return new ResponsePageList(page.getContent(), pageNum, pigeSize, page.getTotalElements(), page.getTotalPages());
     }
 
     @GetMapping("/getCarNoOption")

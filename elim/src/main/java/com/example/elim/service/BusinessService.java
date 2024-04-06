@@ -2,6 +2,7 @@ package com.example.elim.service;
 
 import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface BusinessService {
 
     Business findById(Integer id);
 
-    List<Business> findByFilter(BusinessFilter filter, int pageNum, int pigeSize);
+    Page<Business> listPageByFilter(BusinessFilter filter, int pageNum, int pigeSize);
 
     List<String> getCarNoOption();
 
