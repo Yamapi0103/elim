@@ -2,12 +2,16 @@ package com.example.elim.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "business")
-public class Business {
+public class Business implements Serializable {
+    private static final Long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -49,6 +53,46 @@ public class Business {
 
     @Column(name="driver_share")
     private Integer driverShare;
+
+    /**
+     * 日期 介於
+     * @param "date"
+     * @return date between spec
+     */
+    public static Specification<Business> dateBetween(Date sDate, Date eDate) {
+        return (root, query, builder) ->
+                builder.between(root.get("date"), sDate, eDate);
+    }
+
+    /**
+     * 車號等於
+     * @param carNo
+     * @return 車號等於spec
+     */
+    public static Specification<Business> carNoEqual(String carNo) {
+        return (root, query, builder) ->
+                builder.equal(root.get("carNo"), carNo);
+    }
+
+    /**
+     * 調車人等於
+     * @param orderer
+     * @return 調車人等於spec
+     */
+    public static Specification<Business> ordererEqual(String orderer) {
+        return (root, query, builder) ->
+                builder.equal(root.get("orderer"), orderer);
+    }
+
+    /**
+     * 行程 模糊查詢
+     * @param route
+     * @return 行程 like spec
+     */
+    public static Specification<Business> routeLike(String route) {
+        return (root, query, builder) ->
+                builder.like(root.get("route"), route);
+    }
 
     public Integer getId() {
         return id;

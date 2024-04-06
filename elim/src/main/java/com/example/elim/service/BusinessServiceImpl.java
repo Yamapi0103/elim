@@ -1,6 +1,7 @@
 package com.example.elim.service;
 
 import com.example.elim.dao.BusinessDao;
+import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
 import io.micrometer.common.util.StringUtils;
@@ -15,25 +16,28 @@ import java.util.List;
 public class BusinessServiceImpl implements BusinessService {
 
     @Autowired
+    private BusinessRepository businessRepository;
+
+    @Autowired
     private BusinessDao businessDao;
 
     @Override
     public long total(){
-        return  businessDao.count();
+        return  businessRepository.count();
     }
 
     @Override
     public Business save(Business business){
-        Business model = businessDao.save(business);
+        Business model = businessRepository.save(business);
         System.out.print("執行新增");
         return model;
     }
 
     @Override
     public Business update(Integer id, Business business){
-        Business model = businessDao.findById(id).orElse(null);
+        Business model = businessRepository.findById(id).orElse(null);
         if(model != null){
-            businessDao.save(business); // 必須先檢查有沒有資料，如果沒有，執行save會變成新增
+            businessRepository.save(business); // 必須先檢查有沒有資料，如果沒有，執行save會變成新增
             System.out.print("執行update");
         }else{
             System.out.print("查無資料");
@@ -43,34 +47,23 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void deleteById(Integer id){
-        businessDao.deleteById(id);
+        businessRepository.deleteById(id);
         System.out.print("執行刪除");
     }
 
     @Override
     public List<Business> list(){
-        return businessDao.findAll();
+        return businessRepository.findAll();
     }
 
     @Override
     public Business findById(Integer id) {
-        return businessDao.findById(id).orElse(null);
+        return businessRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Business> findByFilter(BusinessFilter filter) {
-        String carNo = filter.getCarNo();
-        String orderer = filter.getOrderer();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String sDate = sdf.format(filter.getStartDate());
-        String eDate = sdf.format(filter.getEndDate());
-
-        if (!StringUtils.isBlank(carNo)) {
-            return businessDao.findByCarNoAndDate(carNo, sDate, eDate);
-        } else if (!StringUtils.isBlank(orderer)) {
-            return businessDao.findByOrdererAndDate(orderer, sDate, eDate);
-        }
-        return new ArrayList<Business>();
+        return businessDao.findByFilter(filter);
     }
 }
 

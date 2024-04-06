@@ -11,6 +11,8 @@ public class BusinessFilter {
 
     private String orderer;
 
+    private String route;
+
     @NotNull(message = "請輸入起始日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
@@ -49,5 +51,13 @@ public class BusinessFilter {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }
