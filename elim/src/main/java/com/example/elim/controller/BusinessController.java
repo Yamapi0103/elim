@@ -56,4 +56,14 @@ public class BusinessController {
     public List<Business> findByFilter(@Valid @RequestBody BusinessFilter filter){
         return businessService.findByFilter(filter);
     }
+
+    @GetMapping("/getCarNoOption")
+    public List<String> getCarNoOption(){
+        return businessService.getCarNoOption();
+    }
+
+    @GetMapping("/getOrdererOption")
+    public List<String> getOrdererOption(){
+        return businessService.getOrdererOption();
+    }
  }

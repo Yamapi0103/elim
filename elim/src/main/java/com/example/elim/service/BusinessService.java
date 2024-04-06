@@ -20,4 +20,8 @@ public interface BusinessService {
     Business findById(Integer id);
 
     List<Business> findByFilter(BusinessFilter filter);
+
+    List<String> getCarNoOption();
+
+    List<String> getOrdererOption();
 }
