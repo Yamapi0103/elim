@@ -5,6 +5,7 @@ import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,8 +60,10 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<Business> findByFilter(BusinessFilter filter) {
-        return businessDao.findByFilter(filter);
+    public List<Business> findByFilter(BusinessFilter filter, int pageNum, int pigeSize) {
+        Page<Business> pageList = businessDao.findByFilter(filter, pageNum, pigeSize);
+        List<Business> list = pageList.getContent();
+        return list;
     }
 
     @Override

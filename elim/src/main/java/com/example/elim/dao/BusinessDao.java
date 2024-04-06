@@ -4,14 +4,16 @@ import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Repository
 public class BusinessDao {
@@ -19,7 +21,7 @@ public class BusinessDao {
     @Autowired
     private BusinessRepository businessRepository;
 
-    public List<Business> findByFilter(BusinessFilter filter){
+    public Page<Business> findByFilter(BusinessFilter filter, int pageNum, int pigeSize){
 
         Date sDate = filter.getStartDate();
         Date eDate = filter.getEndDate();
@@ -44,6 +46,11 @@ public class BusinessDao {
             spec = spec.and(Business.routeLike("%" + route + "%"));
         }
 
-        return businessRepository.findAll(spec);
+        List<Sort.Order> sorts= new ArrayList<>();
+        sorts.add(new Sort.Order(Sort.Direction.DESC,"date"));
+        sorts.add(new Sort.Order(Sort.Direction.ASC,"carNo"));
+        Pageable pageable = PageRequest.of(pageNum, pigeSize, Sort.by(sorts));
+
+        return (Page<Business>) businessRepository.findAll(spec, pageable);
     }
 }

@@ -53,8 +53,9 @@ public class BusinessController {
     }
 
     @PostMapping("/findByFilter")
-    public List<Business> findByFilter(@Valid @RequestBody BusinessFilter filter){
-        return businessService.findByFilter(filter);
+    public List<Business> findByFilter(@Valid @RequestBody BusinessFilter filter
+            , @RequestParam int pageNum, @RequestParam int pigeSize){
+        return businessService.findByFilter(filter, pageNum, pigeSize);
     }
 
     @GetMapping("/getCarNoOption")

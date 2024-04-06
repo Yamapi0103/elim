@@ -19,7 +19,7 @@ public interface BusinessService {
 
     Business findById(Integer id);
 
-    List<Business> findByFilter(BusinessFilter filter);
+    List<Business> findByFilter(BusinessFilter filter, int pageNum, int pigeSize);
 
     List<String> getCarNoOption();
 
