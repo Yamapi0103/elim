@@ -5,10 +5,30 @@
         title="薪資結帳單列表"
         :rows="localList"
         :columns="processedColumns"
-        row-key="name"
+        row-key="id"
+        selection="single"
+        v-model:selected="selected"
       >
+        <template v-slot:top>
+          <q-btn
+            class="q-mr-sm"
+            color="primary"
+            label="新增列"
+            @click="addRow"
+          />
+          <q-btn
+            color="negative"
+            :disable="!hasSelected"
+            label="刪除列"
+            @click="removeRow"
+          />
+          <q-space />
+        </template>
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" @click="props.selected = true">
+            <q-td>
+              <q-checkbox v-model="props.selected" />
+            </q-td>
             <q-td key="date" :props="props">
               {{ props.row.date }}
               <q-popup-edit
@@ -199,24 +219,52 @@ import { storeToRefs } from 'pinia';
 import { QTableColumn } from 'quasar';
 import { Business, useBusinessStore } from 'src/stores/business';
 import { computed, ref, watch } from 'vue';
+import dayjs from 'dayjs';
 defineOptions({
   name: 'SalaryPage',
 });
 
 const businessStore = useBusinessStore();
 const localList = ref<Business[]>([]);
+const selected = ref<Business[]>([]);
 const { list } = storeToRefs(businessStore);
 businessStore.getList();
 watch(list, (value) => {
   localList.value = value;
 });
 
+const hasSelected = computed(() => selected.value.length > 0);
 const updateRow = (data: Business, key: string, value: any) => {
   const payload = {
     ...data,
     [key]: value,
   };
   businessStore.update(payload);
+};
+
+const addRow = async () => {
+  const row = {
+    carNo: '',
+    date: dayjs().format('YYYY-MM-DD'),
+    route: '',
+    fare: 0,
+    extraCash: 0,
+    finalOrder: '',
+    tip: 0,
+    taxes: 0,
+    orderer: '',
+    reimbursement: '',
+    memo: '',
+    driverShare: null,
+  };
+  await businessStore.add(row);
+  businessStore.getList();
+};
+
+const removeRow = async () => {
+  if (!hasSelected.value) return;
+  await businessStore.remove(selected.value[0].id);
+  businessStore.getList();
 };
 
 const columns = [

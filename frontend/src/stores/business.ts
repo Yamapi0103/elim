@@ -27,6 +27,14 @@ export const useBusinessStore = defineStore('business', () => {
     list.value = data;
   };
 
+  const add = async (data: Omit<Business, 'id'>) => {
+    await api.post('business/save', data);
+  };
+
+  const remove = async (id: number) => {
+    await api.delete(`business/${id}`);
+  };
+
   const update = async (data: Business) => {
     const { id } = data;
     await api.put(`business/${id}`, data);
@@ -35,5 +43,7 @@ export const useBusinessStore = defineStore('business', () => {
     list,
     getList,
     update,
+    add,
+    remove,
   };
 });
