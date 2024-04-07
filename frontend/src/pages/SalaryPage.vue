@@ -1,5 +1,25 @@
 <template>
-  <q-page class="">
+  <q-page>
+    <div class="q-mb-md q-mr-sm">
+      <div class="text-h6 q-pa-sm">篩選條件</div>
+      <q-form @submit="onSearch" @reset="resetCondition" class="q-gutter-md">
+        <MyDatePicker label="起始日期" v-model="startDate" />
+        <MyDatePicker label="結束日期" v-model="endDate" />
+        <q-input label="調車人" v-model="orderer" />
+        <q-input label="車號" v-model="carNo" />
+        <q-input label="行程" v-model="route" />
+        <div>
+          <q-btn label="搜尋" type="submit" color="primary" />
+          <q-btn
+            label="重置"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+        </div>
+      </q-form>
+    </div>
     <div>
       <q-table
         title="薪資結帳單列表"
@@ -25,7 +45,7 @@
           <q-space />
         </template>
         <template v-slot:body="props">
-          <q-tr :props="props" @click="props.selected = true">
+          <q-tr :props="props">
             <q-td>
               <q-checkbox v-model="props.selected" />
             </q-td>
@@ -219,6 +239,8 @@ import { QTableColumn } from 'quasar';
 import { Business, useBusinessStore } from 'src/stores/business';
 import { computed, ref } from 'vue';
 import dayjs from 'dayjs';
+import { storeToRefs } from 'pinia';
+import MyDatePicker from 'components/MyDatePicker.vue';
 defineOptions({
   name: 'SalaryPage',
 });
@@ -227,6 +249,9 @@ const businessStore = useBusinessStore();
 const localList = ref<Business[]>([]);
 const selected = ref<Business[]>([]);
 businessStore.getList();
+const { startDate, endDate, orderer, carNo, route, pagination } =
+  storeToRefs(businessStore);
+const { pageNum, pageSize } = pagination.value;
 
 businessStore.$subscribe((_mutation, state) => {
   localList.value = state.list;
@@ -264,6 +289,24 @@ const removeRow = async () => {
   if (!hasSelected.value) return;
   await businessStore.remove(selected.value[0].id);
   businessStore.getList();
+};
+
+const onSearch = () => {
+  const payload = {
+    pageNum,
+    pageSize,
+    startDate: startDate.value,
+    endDate: endDate.value,
+    orderer: orderer.value,
+    carNo: carNo.value,
+    route: route.value,
+  };
+  businessStore.getListPageByFilter(payload);
+};
+
+const resetCondition = () => {
+  businessStore.resetCondition();
+  onSearch();
 };
 
 const columns = [
