@@ -247,7 +247,6 @@
 import { QTableColumn } from 'quasar';
 import { Business, useBusinessStore } from 'src/stores/business';
 import { computed, ref } from 'vue';
-import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
 import MyDatePicker from 'components/MyDatePicker.vue';
 defineOptions({
@@ -329,9 +328,10 @@ const updateRow = (data: Business, key: string, value: any) => {
 };
 
 const addRow = async () => {
+  businessStore.resetCondition(); // 新增前先清除篩選條件，以免看不到新增列
   const row = {
     carNo: '',
-    date: dayjs().format('YYYY-MM-DD'),
+    date: '',
     route: '',
     fare: 0,
     extraCash: 0,

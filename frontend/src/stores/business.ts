@@ -43,7 +43,7 @@ export interface Pagination {
 
 const initPagination = {
   pageNum: 1,
-  pageSize: 5,
+  pageSize: 10,
   totalCount: 0,
   totalPages: 0,
 };
