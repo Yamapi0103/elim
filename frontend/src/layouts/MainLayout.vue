@@ -11,9 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <!-- <q-toolbar-title> Quasar App </q-toolbar-title> -->
-
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
+        <q-toolbar-title> 以琳數位化 </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
