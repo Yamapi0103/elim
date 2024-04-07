@@ -59,19 +59,16 @@ export const useBusinessStore = defineStore('business', () => {
     endDate,
     pagination,
   };
-  const getList = async () => {
-    const { data } = await api.get('business/list');
-    list.value = data;
-  };
+
   const getListPageByFilter = async (params: ListParams) => {
     const { pageNum, pageSize, ...restParams } = params;
     const { data } = await api.post(
-      `business/listPageByFilter?pageNum=${pageNum}&pageSize=${pageSize}`,
+      `business/listPageByFilter?pageNum=${pageNum - 1}&pageSize=${pageSize}`,
       restParams
     );
-    const { list, ...rest } = data;
-    list.value = list;
-    Object.assign(pagination, rest);
+    const { list: listFromResponse, ...rest } = data;
+    list.value = listFromResponse;
+    Object.assign(pagination, rest, { pageNum: rest.pageNum + 1 });
   };
 
   const add = async (data: Omit<Business, 'id'>) => {
@@ -100,7 +97,6 @@ export const useBusinessStore = defineStore('business', () => {
 
   return {
     list,
-    getList,
     update,
     add,
     remove,
@@ -112,6 +108,6 @@ export const useBusinessStore = defineStore('business', () => {
     carNo,
     route,
     getListPageByFilter,
-    resetCondition
+    resetCondition,
   };
 });

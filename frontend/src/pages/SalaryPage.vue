@@ -248,10 +248,20 @@ defineOptions({
 const businessStore = useBusinessStore();
 const localList = ref<Business[]>([]);
 const selected = ref<Business[]>([]);
-businessStore.getList();
+
 const { startDate, endDate, orderer, carNo, route, pagination } =
   storeToRefs(businessStore);
 const { pageNum, pageSize } = pagination.value;
+const searchPayload = {
+  pageNum,
+  pageSize,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  orderer: orderer.value,
+  carNo: carNo.value,
+  route: route.value,
+};
+businessStore.getListPageByFilter(searchPayload);
 
 businessStore.$subscribe((_mutation, state) => {
   localList.value = state.list;
@@ -259,11 +269,11 @@ businessStore.$subscribe((_mutation, state) => {
 
 const hasSelected = computed(() => selected.value.length > 0);
 const updateRow = (data: Business, key: string, value: any) => {
-  const payload = {
+  const updatePayload = {
     ...data,
     [key]: value,
   };
-  businessStore.update(payload);
+  businessStore.update(updatePayload);
 };
 
 const addRow = async () => {
@@ -282,26 +292,17 @@ const addRow = async () => {
     driverShare: null,
   };
   await businessStore.add(row);
-  businessStore.getList();
+  businessStore.getListPageByFilter(searchPayload);
 };
 
 const removeRow = async () => {
   if (!hasSelected.value) return;
   await businessStore.remove(selected.value[0].id);
-  businessStore.getList();
+  businessStore.getListPageByFilter(searchPayload);
 };
 
 const onSearch = () => {
-  const payload = {
-    pageNum,
-    pageSize,
-    startDate: startDate.value,
-    endDate: endDate.value,
-    orderer: orderer.value,
-    carNo: carNo.value,
-    route: route.value,
-  };
-  businessStore.getListPageByFilter(payload);
+  businessStore.getListPageByFilter(searchPayload);
 };
 
 const resetCondition = () => {
