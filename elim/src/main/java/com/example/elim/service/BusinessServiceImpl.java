@@ -4,10 +4,13 @@ import com.example.elim.dao.BusinessDao;
 import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
 import com.example.elim.model.Business;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -72,6 +75,52 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public List<String> getOrdererOption() {
         return businessRepository.getDistinctOrderer();
+    }
+
+    /*@Override
+    public String export(BusinessFilter filter) {
+        List<Business> sqlResult = businessDao.findExportData(filter);
+        List<BusinessWriteEntity> dataList = new ArrayList<>();
+        for(Business data : sqlResult){
+            BusinessWriteEntity entity = new BusinessWriteEntity();
+            entity.setId(data.getId());
+            entity.setDate(data.getDate());
+            entity.setCarNo(data.getCarNo());
+            entity.setRoute(data.getRoute());
+            entity.setFare(data.getFare());
+            entity.setExtraCash(data.getExtraCash());
+            entity.setFinalOrder(data.getFinalOrder());
+            entity.setTip(data.getTip());
+            entity.setTaxes(data.getTaxes());
+            entity.setOrderer(data.getOrderer());
+            entity.setReimbursement(data.getReimbursement());
+            entity.setMemo(data.getMemo());
+            entity.setDriverShare(data.getDriverShare());
+            dataList.add(entity);
+        }
+
+        String resultMsg = excelUtils.export(dataList);
+        return resultMsg;
+    }*/
+
+    @Override
+    public String export(BusinessFilter filter) {
+        List<Business> businessList = businessDao.getExportData(filter);
+        try(InputStream is = getClass().getClassLoader()
+                .getResource("excelTemplates/Business.xlsx").openStream()) {
+            try (OutputStream os = new FileOutputStream("D:\\export\\BusinessResult.xlsx")) {
+                Context context = new Context();
+                context.putVar("businessList", businessList);
+                JxlsHelper.getInstance().processTemplate(is, os, context);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "OK";
     }
 }
 

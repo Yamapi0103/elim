@@ -25,4 +25,6 @@ public interface BusinessService {
     List<String> getCarNoOption();
 
     List<String> getOrdererOption();
+
+    String export(BusinessFilter filter);
 }

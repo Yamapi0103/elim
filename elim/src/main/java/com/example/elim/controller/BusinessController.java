@@ -71,4 +71,9 @@ public class BusinessController {
     public List<String> getOrdererOption(){
         return businessService.getOrdererOption();
     }
+
+    @PostMapping("/export")
+    public String export(@Valid @RequestBody BusinessFilter filter){
+        return businessService.export(filter);
+    }
  }

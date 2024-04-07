@@ -23,6 +23,25 @@ public class BusinessDao {
 
     public Page<Business> findByFilter(BusinessFilter filter, int pageNum, int pagesize){
 
+        Specification<Business> spec = this.newSpecification(filter);
+        List<Sort.Order> sorts= new ArrayList<>();
+        sorts.add(new Sort.Order(Sort.Direction.DESC,"date"));
+        sorts.add(new Sort.Order(Sort.Direction.DESC,"id"));
+        Pageable pageable = PageRequest.of(pageNum, pagesize, Sort.by(sorts));
+
+        return businessRepository.findAll(spec, pageable);
+    }
+
+    public List<Business> getExportData(BusinessFilter filter){
+        Specification<Business> spec = this.newSpecification(filter);
+        List<Sort.Order> sorts= new ArrayList<>();
+        sorts.add(new Sort.Order(Sort.Direction.ASC,"date"));
+        sorts.add(new Sort.Order(Sort.Direction.ASC,"id"));
+
+        return businessRepository.findAll(spec, Sort.by(sorts));
+    }
+
+    private Specification<Business> newSpecification(BusinessFilter filter){
         Date sDate = filter.getStartDate();
         Date eDate = filter.getEndDate();
         String carNo = filter.getCarNo();
@@ -46,11 +65,6 @@ public class BusinessDao {
             spec = spec.and(Business.routeLike("%" + route + "%"));
         }
 
-        List<Sort.Order> sorts= new ArrayList<>();
-        sorts.add(new Sort.Order(Sort.Direction.DESC,"date"));
-        sorts.add(new Sort.Order(Sort.Direction.ASC,"carNo"));
-        Pageable pageable = PageRequest.of(pageNum, pagesize, Sort.by(sorts));
-
-        return businessRepository.findAll(spec, pageable);
+        return spec;
     }
 }
