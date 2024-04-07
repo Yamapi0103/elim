@@ -5,8 +5,8 @@
       <q-form @submit="onSearch" @reset="resetCondition" class="q-gutter-md">
         <MyDatePicker label="起始日期" v-model="startDate" />
         <MyDatePicker label="結束日期" v-model="endDate" />
-        <q-input label="調車人" v-model="orderer" />
-        <q-input label="車號" v-model="carNo" />
+        <q-select label="車號" v-model="carNo" :options="carNoOption" />
+        <q-select label="調車人" v-model="orderer" :options="ordererOption" />
         <q-input label="行程" v-model="route" />
         <div>
           <q-btn label="搜尋" type="submit" color="primary" />
@@ -251,14 +251,25 @@ const businessStore = useBusinessStore();
 const localList = ref<Business[]>([]);
 const selected = ref<Business[]>([]);
 
-const { startDate, endDate, orderer, carNo, route, pagination } =
-  storeToRefs(businessStore);
+const {
+  startDate,
+  endDate,
+  orderer,
+  carNo,
+  route,
+  pagination,
+  carNoOption,
+  ordererOption,
+} = storeToRefs(businessStore);
 
+console.log('carNo===', carNo);
 const onSearch = () => {
   businessStore.getListPageByFilter();
 };
 
 onSearch();
+businessStore.getCarNoOption();
+businessStore.getCarOrdererOption();
 
 const qPaginationMap = computed({
   get() {

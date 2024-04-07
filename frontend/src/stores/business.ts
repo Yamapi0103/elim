@@ -52,10 +52,12 @@ export const useBusinessStore = defineStore('business', () => {
   const list = ref<Business[]>([]);
   const startDate = ref(dayjs().startOf('month').format('YYYY-MM-DD'));
   const endDate = ref(dayjs().format('YYYY-MM-DD'));
-  const orderer = ref('');
-  const carNo = ref('');
+  const orderer = ref(null);
+  const carNo = ref(null);
   const route = ref('');
   const pagination = reactive<Pagination>(initPagination);
+  const carNoOption = ref<string[]>([]);
+  const ordererOption = ref<string[]>([]);
 
   const getListPageByFilter = async () => {
     const searchPayload = {
@@ -90,11 +92,21 @@ export const useBusinessStore = defineStore('business', () => {
     await api.put(`business/${id}`, data);
   };
 
+  const getCarNoOption = async () => {
+    const { data } = await api.get('business/getCarNoOption');
+    carNoOption.value = data;
+  };
+
+  const getCarOrdererOption = async () => {
+    const { data } = await api.get('business/getOrdererOption');
+    ordererOption.value = data;
+  };
+
   const resetCondition = () => {
     startDate.value = dayjs().startOf('month').format('YYYY-MM-DD');
     endDate.value = dayjs().format('YYYY-MM-DD');
-    orderer.value = '';
-    carNo.value = '';
+    orderer.value = null;
+    carNo.value = null;
     route.value = '';
     Object.assign(pagination, {
       initPagination,
@@ -114,5 +126,9 @@ export const useBusinessStore = defineStore('business', () => {
     route,
     getListPageByFilter,
     resetCondition,
+    getCarOrdererOption,
+    getCarNoOption,
+    ordererOption,
+    carNoOption,
   };
 });

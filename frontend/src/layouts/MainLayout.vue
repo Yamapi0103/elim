@@ -45,7 +45,7 @@ defineOptions({
 
 const linksList: EssentialLinkProps[] = [
   {
-    title: '薪資結帳單',
+    title: '總表',
     // caption: 'quasar.dev',
     icon: 'attach_money',
     link: '/salary',
