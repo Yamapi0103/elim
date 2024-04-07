@@ -102,6 +102,17 @@ export const useBusinessStore = defineStore('business', () => {
     ordererOption.value = data;
   };
 
+  const exportExcel = async () => {
+    const exportPayload = {
+      startDate: startDate.value,
+      endDate: endDate.value,
+      orderer: orderer.value,
+      carNo: carNo.value,
+      route: route.value,
+    };
+    await api.post('business/export', exportPayload);
+  };
+
   const resetCondition = () => {
     startDate.value = dayjs().startOf('month').format('YYYY-MM-DD');
     endDate.value = dayjs().format('YYYY-MM-DD');
@@ -130,5 +141,6 @@ export const useBusinessStore = defineStore('business', () => {
     getCarNoOption,
     ordererOption,
     carNoOption,
+    exportExcel,
   };
 });

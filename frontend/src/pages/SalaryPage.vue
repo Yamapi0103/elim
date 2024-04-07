@@ -17,6 +17,13 @@
             flat
             class="q-ml-sm"
           />
+          <q-btn
+            label="匯出薪資結帳單"
+            type="button"
+            color="secondary"
+            class="q-ml-sm"
+            @click="exportExcel"
+          />
         </div>
       </q-form>
     </div>
@@ -262,7 +269,10 @@ const {
   ordererOption,
 } = storeToRefs(businessStore);
 
-console.log('carNo===', carNo);
+const exportExcel = () => {
+  businessStore.exportExcel();
+};
+
 const onSearch = () => {
   businessStore.getListPageByFilter();
 };
