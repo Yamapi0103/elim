@@ -60,8 +60,8 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public Page<Business> listPageByFilter(BusinessFilter filter, int pageNum, int pigeSize) {
-        return businessDao.findByFilter(filter, pageNum, pigeSize);
+    public Page<Business> listPageByFilter(BusinessFilter filter, int pageNum, int pageSize) {
+        return businessDao.findByFilter(filter, pageNum, pageSize);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class BusinessDao {
     @Autowired
     private BusinessRepository businessRepository;
 
-    public Page<Business> findByFilter(BusinessFilter filter, int pageNum, int pigeSize){
+    public Page<Business> findByFilter(BusinessFilter filter, int pageNum, int pagesize){
 
         Date sDate = filter.getStartDate();
         Date eDate = filter.getEndDate();
@@ -49,7 +49,7 @@ public class BusinessDao {
         List<Sort.Order> sorts= new ArrayList<>();
         sorts.add(new Sort.Order(Sort.Direction.DESC,"date"));
         sorts.add(new Sort.Order(Sort.Direction.ASC,"carNo"));
-        Pageable pageable = PageRequest.of(pageNum, pigeSize, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(pageNum, pagesize, Sort.by(sorts));
 
         return businessRepository.findAll(spec, pageable);
     }

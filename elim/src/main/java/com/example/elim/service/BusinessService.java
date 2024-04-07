@@ -20,7 +20,7 @@ public interface BusinessService {
 
     Business findById(Integer id);
 
-    Page<Business> listPageByFilter(BusinessFilter filter, int pageNum, int pigeSize);
+    Page<Business> listPageByFilter(BusinessFilter filter, int pageNum, int pageSize);
 
     List<String> getCarNoOption();
 

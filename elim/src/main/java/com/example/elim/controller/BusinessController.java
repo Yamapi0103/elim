@@ -56,10 +56,10 @@ public class BusinessController {
 
     @PostMapping("/listPageByFilter")
     public ResponsePageList listPageByFilter(@Valid @RequestBody BusinessFilter filter
-            , @RequestParam int pageNum, @RequestParam int pigeSize){
+            , @RequestParam int pageNum, @RequestParam int pageSize){
 
-        Page<Business> page = businessService.listPageByFilter(filter, pageNum, pigeSize);
-        return new ResponsePageList(page.getContent(), pageNum, pigeSize, page.getTotalElements(), page.getTotalPages());
+        Page<Business> page = businessService.listPageByFilter(filter, pageNum, pageSize);
+        return new ResponsePageList(page.getContent(), pageNum, pageSize, page.getTotalElements(), page.getTotalPages());
     }
 
     @GetMapping("/getCarNoOption")
