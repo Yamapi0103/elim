@@ -28,6 +28,8 @@
         row-key="id"
         selection="single"
         v-model:selected="selected"
+        v-model:pagination="qPaginationMap"
+        @request="onPageChange"
       >
         <template v-slot:top>
           <q-btn
@@ -251,17 +253,46 @@ const selected = ref<Business[]>([]);
 
 const { startDate, endDate, orderer, carNo, route, pagination } =
   storeToRefs(businessStore);
-const { pageNum, pageSize } = pagination.value;
-const searchPayload = {
-  pageNum,
-  pageSize,
-  startDate: startDate.value,
-  endDate: endDate.value,
-  orderer: orderer.value,
-  carNo: carNo.value,
-  route: route.value,
+
+const onSearch = () => {
+  businessStore.getListPageByFilter();
 };
-businessStore.getListPageByFilter(searchPayload);
+
+onSearch();
+
+const qPaginationMap = computed({
+  get() {
+    const {
+      pageNum: page,
+      totalCount: rowsNumber,
+      pageSize: rowsPerPage,
+    } = pagination.value;
+    return {
+      page,
+      rowsPerPage,
+      rowsNumber,
+    };
+  },
+  set() {
+    return;
+  },
+});
+
+const paginationFromQPagination = (props: any) => {
+  const { page: pageNum, rowsPerPage: pageSize } = props.pagination;
+  return { pageNum, pageSize };
+};
+
+const onPageChange = (props: any) => {
+  const { pageNum, pageSize } = paginationFromQPagination(props);
+  businessStore.$patch({
+    pagination: {
+      pageNum,
+      pageSize,
+    },
+  });
+  onSearch();
+};
 
 businessStore.$subscribe((_mutation, state) => {
   localList.value = state.list;
@@ -292,17 +323,13 @@ const addRow = async () => {
     driverShare: null,
   };
   await businessStore.add(row);
-  businessStore.getListPageByFilter(searchPayload);
+  onSearch();
 };
 
 const removeRow = async () => {
   if (!hasSelected.value) return;
   await businessStore.remove(selected.value[0].id);
-  businessStore.getListPageByFilter(searchPayload);
-};
-
-const onSearch = () => {
-  businessStore.getListPageByFilter(searchPayload);
+  onSearch();
 };
 
 const resetCondition = () => {

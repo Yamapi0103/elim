@@ -20,13 +20,9 @@ export interface Business {
   driverShare: number | null;
 }
 
-export interface List {
+export type List = {
   list: Business[];
-  pageNum: number;
-  pageSize: number;
-  totalCount: number;
-  totalPages: number;
-}
+} & Pagination;
 
 export interface ListParams {
   pageNum: number;
@@ -36,6 +32,13 @@ export interface ListParams {
   orderer: string;
   carNo: string;
   route: string;
+}
+
+export interface Pagination {
+  pageNum: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
 }
 
 const initPagination = {
@@ -52,16 +55,19 @@ export const useBusinessStore = defineStore('business', () => {
   const orderer = ref('');
   const carNo = ref('');
   const route = ref('');
-  const pagination = reactive(initPagination);
+  const pagination = reactive<Pagination>(initPagination);
 
-  const filterCondition = {
-    startDate,
-    endDate,
-    pagination,
-  };
-
-  const getListPageByFilter = async (params: ListParams) => {
-    const { pageNum, pageSize, ...restParams } = params;
+  const getListPageByFilter = async () => {
+    const searchPayload = {
+      pageNum: pagination.pageNum,
+      pageSize: pagination.pageSize,
+      startDate: startDate.value,
+      endDate: endDate.value,
+      orderer: orderer.value,
+      carNo: carNo.value,
+      route: route.value,
+    };
+    const { pageNum, pageSize, ...restParams } = searchPayload;
     const { data } = await api.post(
       `business/listPageByFilter?pageNum=${pageNum - 1}&pageSize=${pageSize}`,
       restParams
@@ -103,7 +109,6 @@ export const useBusinessStore = defineStore('business', () => {
     pagination,
     startDate,
     endDate,
-    filterCondition,
     orderer,
     carNo,
     route,
