@@ -1,11 +1,20 @@
 package com.example.elim.dto;
 
 import jakarta.validation.constraints.NotNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 public class BusinessFilter {
+
+    /**
+     * 報表類型
+     * 1 = 總表清單 BusinessList
+     * 2 = 薪資結帳單 MonthSalaryReport
+     */
+    @NotNull(message = "請選擇輸出的報表類型")
+    private Integer type;
 
     private String carNo;
 
@@ -20,6 +29,18 @@ public class BusinessFilter {
 //    @NotNull(message = "請輸入結束日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
+
+    // ==============================
+
+    public String checkTypeAndRequiredField(){
+        if(this.type == 2){
+            //  薪資結帳單一定要選擇車號或是調車人
+            if(StringUtils.isBlank(this.carNo) && StringUtils.isBlank(this.orderer)){
+                return "欲匯出薪資結帳單，車號或是調車人必填";
+            }
+        }
+        return null;
+    }
 
     public String getCarNo() {
         return carNo;
@@ -59,5 +80,13 @@ public class BusinessFilter {
 
     public void setRoute(String route) {
         this.route = route;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
