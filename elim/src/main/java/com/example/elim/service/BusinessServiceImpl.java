@@ -109,7 +109,10 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public String export(BusinessFilter filter) {
-        int reportType = filter.getType();
+        Integer reportType = filter.getType();
+        if(reportType == null){
+            return "入參請帶入Type，已表示報表類型";
+        }
         String errorMsg = filter.checkTypeAndRequiredField();
         if(errorMsg != null){
             return errorMsg;
@@ -117,7 +120,7 @@ public class BusinessServiceImpl implements BusinessService {
         List<Business> businessList = businessDao.getExportData(filter);
         if(reportType == 1){
             excelUtils.exportDate(businessList,"BusinessList", reportType);
-        }else if (reportType ==2){
+        }else if (reportType == 2){
 
         }
 

@@ -13,7 +13,6 @@ public class BusinessFilter {
      * 1 = 總表清單 BusinessList
      * 2 = 薪資結帳單 MonthSalaryReport
      */
-    @NotNull(message = "請選擇輸出的報表類型")
     private Integer type;
 
     private String carNo;
