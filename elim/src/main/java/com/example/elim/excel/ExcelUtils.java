@@ -35,21 +35,23 @@ public class ExcelUtils {
 
     private File getFile(String fileName){
         Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat ("yyyyMMddhhmmss");
-//        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-//        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");  // 12小時制
+//        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  // 24小時制
+        SimpleDateFormat sdf = new SimpleDateFormat ("yyyyMMddHHmmss");
         String getNowStr = sdf.format(now);
         String year = getNowStr.substring(0,4);
         String month = getNowStr.substring(4,6);
+        String day = getNowStr.substring(6,8);
         String monthAndDay = getNowStr.substring(4,8);
-        String minuteAndSecond = getNowStr.substring(8,12);
-        String folderPath = "D:/export/" + year + "/" + month;
+        String timeStr = getNowStr.substring(8,14);
+        String folderPath = "D:/export/" + year + "/" + month + "/" + day;
+
         File folder = new File(folderPath);
         if(!folder.exists()){
             folder.mkdirs();
         }
         File file = new File(folderPath + "/" + fileName
-                + "_" +monthAndDay + "_" + minuteAndSecond +".xlsx");
+                + "_" + timeStr +".xlsx");
         return file;
     }
 
