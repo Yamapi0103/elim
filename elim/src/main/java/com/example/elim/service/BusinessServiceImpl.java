@@ -3,6 +3,7 @@ package com.example.elim.service;
 import com.example.elim.dao.BusinessDao;
 import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
+import com.example.elim.excel.ExcelUtils;
 import com.example.elim.model.Business;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
@@ -21,6 +22,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Autowired
     private BusinessDao businessDao;
+
+    @Autowired
+    private ExcelUtils excelUtils;
 
     @Override
     public long total(){
@@ -106,20 +110,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public String export(BusinessFilter filter) {
         List<Business> businessList = businessDao.getExportData(filter);
-        try(InputStream is = getClass().getClassLoader()
-                .getResource("excelTemplates/Business.xlsx").openStream()) {
-            try (OutputStream os = new FileOutputStream("D:\\export\\BusinessResult.xlsx")) {
-                Context context = new Context();
-                context.putVar("businessList", businessList);
-                JxlsHelper.getInstance().processTemplate(is, os, context);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        excelUtils.exportDate(businessList,"BusinessList");
         return "OK";
     }
 }
