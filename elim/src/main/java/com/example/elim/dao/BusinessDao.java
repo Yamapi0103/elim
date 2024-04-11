@@ -23,7 +23,7 @@ public class BusinessDao {
 
     public Page<Business> findByFilter(BusinessFilter filter, int pageNum, int pagesize){
 
-        Specification<Business> spec = this.newSpecification(filter);
+        Specification<Business> spec = this.newSpecificationByCondition(filter);
         List<Sort.Order> sorts= new ArrayList<>();
         sorts.add(new Sort.Order(Sort.Direction.DESC,"date"));
         sorts.add(new Sort.Order(Sort.Direction.DESC,"id"));
@@ -33,7 +33,7 @@ public class BusinessDao {
     }
 
     public List<Business> getExportData(BusinessFilter filter){
-        Specification<Business> spec = this.newSpecification(filter);
+        Specification<Business> spec = this.newSpecificationByCondition(filter);
         List<Sort.Order> sorts= new ArrayList<>();
         sorts.add(new Sort.Order(Sort.Direction.ASC,"date"));
         sorts.add(new Sort.Order(Sort.Direction.ASC,"id"));
@@ -41,7 +41,7 @@ public class BusinessDao {
         return businessRepository.findAll(spec, Sort.by(sorts));
     }
 
-    private Specification<Business> newSpecification(BusinessFilter filter){
+    private Specification<Business> newSpecificationByCondition(BusinessFilter filter){
         Date sDate = filter.getStartDate();
         Date eDate = filter.getEndDate();
         String carNo = filter.getCarNo();
@@ -50,7 +50,14 @@ public class BusinessDao {
 
         Specification<Business> spec = Specification.where(null);
         if(sDate != null && eDate != null){
+            // AND date between 'sDate' and 'eDate'
             spec = spec.and(Business.dateBetween(sDate, eDate));
+        }else if (sDate != null) {
+            // AND date >= 'sDate'
+            spec = spec.and(Business.dateGreaterThanOrEqualTo(sDate));
+        }else if(eDate != null){
+            // AND date <= 'eDate'
+            spec = spec.and(Business.dateLessThanOrEqualTo(eDate));
         }
 
         if (StringUtils.isNotBlank(carNo)) {

@@ -17,7 +17,7 @@ public class BusinessFilter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @NotNull(message = "請輸入結束日期")
+//    @NotNull(message = "請輸入結束日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 

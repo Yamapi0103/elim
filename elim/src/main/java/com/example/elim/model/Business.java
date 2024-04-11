@@ -65,6 +65,26 @@ public class Business implements Serializable {
     }
 
     /**
+     * 大於等於 開始日期
+     * @param "date"
+     * @return date 大於等於 spec
+     */
+    public static Specification<Business> dateGreaterThanOrEqualTo(Date sDate) {
+        return (root, query, builder) ->
+                builder.greaterThanOrEqualTo(root.get("date"), sDate);
+    }
+
+    /**
+     * 小於等於 結束日期
+     * @param "date"
+     * @return date 小於等於 spec
+     */
+    public static Specification<Business> dateLessThanOrEqualTo(Date eDate) {
+        return (root, query, builder) ->
+                builder.lessThanOrEqualTo(root.get("date"), eDate);
+    }
+
+    /**
      * 車號等於
      * @param carNo
      * @return 車號等於spec
