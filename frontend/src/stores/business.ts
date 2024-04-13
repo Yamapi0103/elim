@@ -9,13 +9,13 @@ export interface Business {
   carNo: string;
   date: string;
   route: string;
-  fare: number;
-  extraCash: number;
-  finalOrder: string;
+  fare: number | null;
+  extraCash: number | null;
+  finalOrder: number | null;
   tip: number | null;
   taxes: number | null;
   orderer: string;
-  reimbursement: string;
+  reimbursement: number | null;
   memo: string;
   driverShare: number | null;
 }
@@ -51,7 +51,7 @@ const initPagination = {
 export const useBusinessStore = defineStore('business', () => {
   const list = ref<Business[]>([]);
   const startDate = ref(dayjs().startOf('month').format('YYYY-MM-DD'));
-  const endDate = ref(dayjs().format('YYYY-MM-DD'));
+  const endDate = ref('');
   const orderer = ref(null);
   const carNo = ref(null);
   const route = ref('');
@@ -115,7 +115,7 @@ export const useBusinessStore = defineStore('business', () => {
 
   const resetCondition = () => {
     startDate.value = dayjs().startOf('month').format('YYYY-MM-DD');
-    endDate.value = dayjs().format('YYYY-MM-DD');
+    endDate.value = '';
     orderer.value = null;
     carNo.value = null;
     route.value = '';

@@ -249,6 +249,7 @@ import { Business, useBusinessStore } from 'src/stores/business';
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import MyDatePicker from 'components/MyDatePicker.vue';
+import dayjs from 'dayjs';
 defineOptions({
   name: 'SalaryPage',
 });
@@ -331,15 +332,15 @@ const addRow = async () => {
   businessStore.resetCondition(); // 新增前先清除篩選條件，以免看不到新增列
   const row = {
     carNo: '',
-    date: '',
+    date: dayjs().format('YYYY-MM-DD'),
     route: '',
     fare: 0,
-    extraCash: 0,
-    finalOrder: '',
-    tip: 0,
-    taxes: 0,
+    extraCash: null,
+    finalOrder: null,
+    tip: null,
+    taxes: null,
     orderer: '',
-    reimbursement: '',
+    reimbursement: null,
     memo: '',
     driverShare: null,
   };
