@@ -14,7 +14,7 @@
           <q-btn
             label="匯出總表"
             type="button"
-            color="warning"
+            color="yellow-8"
             class="q-ml-sm"
             @click="exportExcel(exportType.BusinessList)"
           />
@@ -318,12 +318,18 @@ businessStore.$subscribe((_mutation, state) => {
 });
 
 const hasSelected = computed(() => selected.value.length > 0);
-const updateRow = (data: Business, key: string, value: any) => {
+const updateRow = async (data: Business, key: string, value: any) => {
   const updatePayload = {
     ...data,
     [key]: value,
   };
-  businessStore.update(updatePayload);
+  await businessStore.update(updatePayload);
+  if (key === 'carNo') {
+    businessStore.getCarNoOption();
+  }
+  if (key === 'orderer') {
+    businessStore.getCarOrdererOption();
+  }
 };
 
 const addRow = async () => {
