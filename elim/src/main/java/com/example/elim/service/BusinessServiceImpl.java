@@ -3,16 +3,17 @@ package com.example.elim.service;
 import com.example.elim.dao.BusinessDao;
 import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
+import com.example.elim.excel.ExcelFunParams;
 import com.example.elim.excel.ExcelUtils;
+import com.example.elim.excel.reportOutputData.MonthSalaryStatistics;
 import com.example.elim.model.Business;
-import org.jxls.common.Context;
-import org.jxls.util.JxlsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BusinessServiceImpl implements BusinessService {
@@ -111,17 +112,41 @@ public class BusinessServiceImpl implements BusinessService {
     public String export(BusinessFilter filter) {
         Integer reportType = filter.getType();
         if(reportType == null){
-            return "入參請帶入Type，已表示報表類型";
+            return "入參缺少報表類型Type";
         }
         String errorMsg = filter.checkTypeAndRequiredField();
         if(errorMsg != null){
             return errorMsg;
         }
-        List<Business> businessList = businessDao.getExportData(filter);
-        if(reportType == 1){
-            excelUtils.exportDate(businessList,"BusinessList", reportType);
-        }else if (reportType == 2){
 
+        ExcelFunParams excelParams = new ExcelFunParams();
+        List<Business> dataList = businessDao.getExportData(filter);
+
+        if (reportType == 1) {    // 匯出總表
+            excelParams.setTemplateName("BusinessList");
+            HashMap<String, Object> contextVarMap = new HashMap<>();
+            contextVarMap.put("businessList", dataList);
+            excelParams.setContextVar(contextVarMap);
+            excelUtils.exportDate(excelParams);
+        } else if (reportType == 2) {    // 匯出薪資結帳單
+            MonthSalaryStatistics salaryStatistics = new MonthSalaryStatistics();
+            salaryStatistics.setFare(dataList.stream().mapToInt(b -> Objects.isNull(b.getFare()) ? 0 : b.getFare()).sum());
+            salaryStatistics.setExtraCash(dataList.stream().mapToInt(b -> Objects.isNull(b.getExtraCash()) ? 0 : b.getExtraCash()).sum());
+            salaryStatistics.setFinalOrder(dataList.stream().mapToInt(b -> Objects.isNull(b.getFinalOrder()) ? 0 : b.getFinalOrder()).sum());
+            salaryStatistics.setTip(dataList.stream().mapToInt(b -> Objects.isNull(b.getTip()) ? 0 : b.getTip()).sum());
+            salaryStatistics.setTaxes(dataList.stream().mapToInt(b -> Objects.isNull(b.getTaxes()) ? 0 : b.getTaxes()).sum());
+            salaryStatistics.setReimbursement(dataList.stream().mapToInt(b -> Objects.isNull(b.getReimbursement()) ? 0 : b.getReimbursement()).sum());
+            salaryStatistics.setDriverShare(dataList.stream().mapToInt(b -> Objects.isNull(b.getDriverShare()) ? 0 : b.getDriverShare()).sum());
+            salaryStatistics.calTotal();    // 讓物件本身自己計算兩個總結欄位
+
+            HashMap<String, Object> contextVarMap = new HashMap<>();
+            contextVarMap.put("businessList", dataList);
+            contextVarMap.put("sum", salaryStatistics);
+            contextVarMap.put("carNo", dataList.get(0).getCarNo());
+            contextVarMap.put("sDate", dataList.get(0).getDate());
+            excelParams.setTemplateName("MonthSalaryReport");
+            excelParams.setContextVar(contextVarMap);
+            excelUtils.exportDate(excelParams);
         }
 
         return "匯出成功";

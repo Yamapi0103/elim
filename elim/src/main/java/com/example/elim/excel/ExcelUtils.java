@@ -1,7 +1,5 @@
 package com.example.elim.excel;
 
-import com.example.elim.model.Business;
-import org.apache.commons.lang3.StringUtils;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.springframework.stereotype.Component;
@@ -13,10 +11,11 @@ import java.util.*;
 @Component
 public class ExcelUtils {
 
-    public void exportDate(List<Business> dateList, String templateName, int reportType){
+    public void exportDate(ExcelFunParams excelParams){
 
+        String templateName = excelParams.getTemplateName();
         String templatePath = "excelTemplates/" + templateName + ".xlsx";
-        Context context = contextPutVar(dateList, reportType);
+        Context context = contextPutVar(excelParams.getContextVar());
         File file = getFile(templateName);
 
         try(InputStream is = getClass().getClassLoader()
@@ -35,8 +34,6 @@ public class ExcelUtils {
 
     private File getFile(String fileName){
         Date now = Calendar.getInstance().getTime();
-//        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");  // 12小時制
-//        SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  // 24小時制
         SimpleDateFormat sdf = new SimpleDateFormat ("yyyyMMddHHmmss");
         String getNowStr = sdf.format(now);
         String year = getNowStr.substring(0,4);
@@ -55,16 +52,11 @@ public class ExcelUtils {
         return file;
     }
 
-    private Context contextPutVar(List<Business> dateList, int reportType){
+    private Context contextPutVar(Map<String, Object> varMap){
         Context context = new Context();
-        context.putVar("businessList", dateList);
-        if(reportType == 1){
-            // do nothing
-        } else if (reportType ==2){
-            Business business = dateList.get(0);
-            context.putVar("carNo", business.getCarNo());
-            context.putVar("sDate", business.getDate());
-        }
+        varMap.forEach((key, value) -> {
+            context.putVar(key, value);
+        });
         return context;
     }
 }

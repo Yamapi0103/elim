@@ -34,10 +34,10 @@ public class Business implements Serializable {
     private Integer extraCash;
 
     @Column(name="final_order")
-    private String finalOrder;
+    private Integer finalOrder;
 
     @Column(name="tip")
-    private String tip;
+    private Integer tip;
 
     @Column(name="taxes")
     private Integer taxes;
@@ -46,7 +46,7 @@ public class Business implements Serializable {
     private String orderer;
 
     @Column(name="reimbursement")
-    private String reimbursement;
+    private Integer reimbursement;
 
     @Column(name="memo")
     private String memo;
@@ -162,19 +162,19 @@ public class Business implements Serializable {
         this.extraCash = extraCash;
     }
 
-    public String getFinalOrder() {
+    public Integer getFinalOrder() {
         return finalOrder;
     }
 
-    public void setFinalOrder(String finalOrder) {
+    public void setFinalOrder(Integer finalOrder) {
         this.finalOrder = finalOrder;
     }
 
-    public String getTip() {
+    public Integer getTip() {
         return tip;
     }
 
-    public void setTip(String tip) {
+    public void setTip(Integer tip) {
         this.tip = tip;
     }
 
@@ -194,11 +194,11 @@ public class Business implements Serializable {
         this.orderer = orderer;
     }
 
-    public String getReimbursement() {
+    public Integer getReimbursement() {
         return reimbursement;
     }
 
-    public void setReimbursement(String reimbursement) {
+    public void setReimbursement(Integer reimbursement) {
         this.reimbursement = reimbursement;
     }
 
