@@ -20,6 +20,11 @@ export interface Business {
   driverShare: number | null;
 }
 
+export enum exportType {
+  BusinessList = 1,
+  MonthSalaryReport = 2,
+}
+
 export type List = {
   list: Business[];
 } & Pagination;
@@ -102,8 +107,9 @@ export const useBusinessStore = defineStore('business', () => {
     ordererOption.value = data;
   };
 
-  const exportExcel = async () => {
+  const exportExcel = async (type: exportType) => {
     const exportPayload = {
+      type,
       startDate: startDate.value,
       endDate: endDate.value,
       orderer: orderer.value,

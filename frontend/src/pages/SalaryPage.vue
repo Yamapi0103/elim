@@ -9,20 +9,22 @@
         <q-select label="調車人" v-model="orderer" :options="ordererOption" />
         <q-input label="行程" v-model="route" />
         <div>
-          <q-btn label="搜尋" type="submit" color="primary" />
+          <q-btn label="查詢" type="submit" color="primary" />
+          <q-btn label="重置" type="reset" color="grey-6" class="q-ml-sm" />
           <q-btn
-            label="重置"
-            type="reset"
-            color="primary"
-            flat
+            label="匯出總表"
+            type="button"
+            color="warning"
             class="q-ml-sm"
+            @click="exportExcel(exportType.BusinessList)"
           />
           <q-btn
             label="匯出薪資結帳單"
             type="button"
             color="secondary"
             class="q-ml-sm"
-            @click="exportExcel"
+            :disable="!carNo && !orderer"
+            @click="exportExcel(exportType.MonthSalaryReport)"
           />
         </div>
       </q-form>
@@ -39,12 +41,7 @@
         @request="onPageChange"
       >
         <template v-slot:top>
-          <q-btn
-            class="q-mr-sm"
-            color="primary"
-            label="新增列"
-            @click="addRow"
-          />
+          <q-btn class="q-mr-sm" color="info" label="新增列" @click="addRow" />
           <q-btn
             color="negative"
             :disable="!hasSelected"
@@ -250,6 +247,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import MyDatePicker from 'components/MyDatePicker.vue';
 import dayjs from 'dayjs';
+import { exportType } from 'src/stores/business';
 defineOptions({
   name: 'SalaryPage',
 });
@@ -269,8 +267,8 @@ const {
   ordererOption,
 } = storeToRefs(businessStore);
 
-const exportExcel = () => {
-  businessStore.exportExcel();
+const exportExcel = (type: exportType) => {
+  businessStore.exportExcel(type);
 };
 
 const onSearch = () => {
