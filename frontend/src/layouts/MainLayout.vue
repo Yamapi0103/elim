@@ -15,10 +15,9 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer :width="200" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> 以琳和撒那 </q-item-label>
-
         <EssentialLink
           v-for="link in linksList"
           :key="link.title"
@@ -32,7 +31,7 @@
     </q-page-container>
   </q-layout>
 </template>
-
+ƒ
 <script setup lang="ts">
 import { ref } from 'vue';
 import EssentialLink, {
