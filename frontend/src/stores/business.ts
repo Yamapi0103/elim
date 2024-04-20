@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { defineStore } from 'pinia';
+import { Notify } from 'quasar';
 import { api } from 'src/boot/axios';
 import { reactive, ref } from 'vue';
 export const getBusiness = (id: number) => api.get(`business/${id}`);
@@ -116,7 +117,12 @@ export const useBusinessStore = defineStore('business', () => {
       carNo: carNo.value,
       route: route.value,
     };
-    await api.post('business/export', exportPayload);
+    const { data: message } = await api.post('business/export', exportPayload);
+    Notify.create({
+      message,
+      color: 'positive',
+      timeout: 3000,
+    });
   };
 
   const resetCondition = () => {
