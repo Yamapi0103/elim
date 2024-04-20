@@ -91,12 +91,7 @@
                 v-slot="scope"
                 @save="(value) => updateRow(props.row, 'route', value)"
               >
-                <q-input
-                  v-model="scope.value"
-                  dense
-                  autofocus
-                  @keyup.enter="scope.set"
-                />
+                <q-input v-model="scope.value" dense autofocus />
               </q-popup-edit>
             </q-td>
             <q-td key="fare" :props="props">
@@ -192,12 +187,7 @@
                 v-slot="scope"
                 @save="(value) => updateRow(props.row, 'orderer', value)"
               >
-                <q-input
-                  v-model="scope.value"
-                  dense
-                  autofocus
-                  @keyup.enter="scope.set"
-                />
+                <q-input v-model="scope.value" dense autofocus />
               </q-popup-edit>
             </q-td>
             <q-td key="reimbursement" :props="props">
@@ -225,12 +215,7 @@
                 v-slot="scope"
                 @save="(value) => updateRow(props.row, 'memo', value)"
               >
-                <q-input
-                  v-model="scope.value"
-                  dense
-                  autofocus
-                  @keyup.enter="scope.set"
-                />
+                <q-input v-model="scope.value" dense autofocus />
               </q-popup-edit>
             </q-td>
           </q-tr>
