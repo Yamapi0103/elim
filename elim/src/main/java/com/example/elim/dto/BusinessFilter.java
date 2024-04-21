@@ -12,6 +12,7 @@ public class BusinessFilter {
      * 報表類型
      * 1 = 總表清單 BusinessList
      * 2 = 薪資結帳單 MonthSalaryReport
+     * 3 = 用車結帳單 (應收帳款報表) OrdererMonthlyReport
      */
     private Integer type;
 
@@ -21,7 +22,7 @@ public class BusinessFilter {
 
     private String route;
 
-    @NotNull(message = "請輸入起始日期")
+//    @NotNull(message = "請輸入起始日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
@@ -34,9 +35,13 @@ public class BusinessFilter {
     public String checkTypeAndRequiredField(){
         if(this.type == 2){
             //  薪資結帳單一定要選擇車號或是調車人
-            if(StringUtils.isBlank(this.carNo) && StringUtils.isBlank(this.orderer)){
-                return "欲匯出薪資結帳單，車號或是調車人必填";
+            if(StringUtils.isBlank(this.carNo)){
+                return "欲匯出薪資結帳單，車號必填";
             }
+        }else if(this.type == 3){
+//            if(StringUtils.isBlank(this.orderer)){
+//                return "欲匯出用車結帳單，調車人必填";
+//            }
         }
         return null;
     }

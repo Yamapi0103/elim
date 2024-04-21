@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessServiceImpl implements BusinessService {
@@ -147,7 +149,18 @@ public class BusinessServiceImpl implements BusinessService {
             excelParams.setTemplateName("MonthSalaryReport");
             excelParams.setContextVar(contextVarMap);
             excelUtils.exportDate(excelParams);
+        } else if (reportType == 3) {    // 匯出用車結帳單
+            Map<String, List<Business>> ordererMap = dataList.stream().collect(Collectors.groupingBy(Business::getOrderer));
+            ordererMap.forEach((key, value) -> {
+                ExcelFunParams params = new ExcelFunParams();
+                params.setTemplateName("OrdererMonthlyReport");
+                HashMap<String, Object> contextVarMap = new HashMap<>();
+                contextVarMap.put("businessList", value);
+                params.setContextVar(contextVarMap);
+                excelUtils.exportDate(params);
+            });
         }
+
 
         return "匯出成功";
     }
