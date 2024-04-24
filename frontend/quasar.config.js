@@ -51,7 +51,7 @@ module.exports = configure(function (ctx) {
           ? 'http://localhost:8080'
           : 'https://yamapi0103.github.io/elim',
       },
-      vueRouterMode: 'history', // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
