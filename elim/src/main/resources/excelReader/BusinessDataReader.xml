@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+<!--    <worksheet name="Sheet1">-->
+<!--        &lt;!&ndash; section 表示固定的行數，不需要讀取的行 &ndash;&gt;-->
+<!--        &lt;!&ndash; 下標都是從0開始 &ndash;&gt;-->
+<!--        <section startRow="0" endRow="0"></section>-->
+<!--        &lt;!&ndash; 行列與實體數據對應關係映射 &ndash;&gt;-->
+<!--        <loop startRow="1" endRow="1" items="dataList" var="data"-->
+<!--              varType="com.example.elim.dto.ExcelDataTest">-->
+<!--            <section startRow="1" endRow="1">-->
+<!--                <mapping row="1" col="0">data.column1</mapping>-->
+<!--                <mapping row="1" col="1">data.column2</mapping>-->
+<!--                <mapping row="1" col="2">data.column3</mapping>-->
+<!--            </section>-->
+<!--            &lt;!&ndash; 讀取終止條件， 當第一列爲空值會終止讀取數據 &ndash;&gt;-->
+<!--            <loopbreakcondition>-->
+<!--                <rowcheck offset="0">-->
+<!--                    <cellcheck offset="9"></cellcheck>-->
+<!--                </rowcheck>-->
+<!--            </loopbreakcondition>-->
+<!--        </loop>-->
+<!--    </worksheet>-->
+    <worksheet name="Sheet1">
+        <loop startRow="1" endRow="1" items="dataList" var="data"
+              varType="com.example.elim.dto.ExcelDataTest">
+            <section startRow="1" endRow="1">
+                <mapping row="2" col="0">data.column1</mapping>
+                <mapping row="2" col="1">data.column2</mapping>
+                <mapping row="2" col="2">data.column3</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0">Employee Payment Totals:</cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

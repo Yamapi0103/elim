@@ -4,7 +4,7 @@ import com.example.elim.dao.BusinessDao;
 import com.example.elim.dao.BusinessRepository;
 import com.example.elim.dto.BusinessFilter;
 import com.example.elim.excel.ExcelFunParams;
-import com.example.elim.excel.ExcelUtils;
+import com.example.elim.excel.JXLSExcelUtil;
 import com.example.elim.excel.reportOutputData.MonthSalaryStatistics;
 import com.example.elim.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessDao businessDao;
 
     @Autowired
-    private ExcelUtils excelUtils;
+    private JXLSExcelUtil excelUtils;
 
     @Override
     public long total(){

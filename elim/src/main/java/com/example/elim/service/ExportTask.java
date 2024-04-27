@@ -1,7 +1,7 @@
 package com.example.elim.service;
 
 import com.example.elim.excel.ExcelFunParams;
-import com.example.elim.excel.ExcelUtils;
+import com.example.elim.excel.JXLSExcelUtil;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ public class ExportTask implements Runnable{
     }
     @Override
     public void run() {
-        ExcelUtils excelUtils = new ExcelUtils();
+        JXLSExcelUtil excelUtils = new JXLSExcelUtil();
         excelUtils.exportDate(params);
 
         try {
