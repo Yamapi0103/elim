@@ -1,8 +1,11 @@
 package com.example.elim.excel;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ExcelFunParams {
 
     private String templateName;

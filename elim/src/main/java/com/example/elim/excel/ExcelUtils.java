@@ -10,17 +10,22 @@ import java.util.*;
 
 @Component
 public class ExcelUtils {
-
     public void exportDate(ExcelFunParams excelParams){
+
+        System.out.println("匯出一份EXCEL");
 
         String templateName = excelParams.getTemplateName();
         String templatePath = "excelTemplates/" + templateName + ".xlsx";
-        Context context = contextPutVar(excelParams.getContextVar());
+        //Context context = contextPutVar(excelParams.getContextVar());
         File file = getFile(templateName);
 
         try(InputStream is = getClass().getClassLoader()
                 .getResource(templatePath).openStream()) {
             try (OutputStream os = new FileOutputStream(file)) {
+                Context context = new Context();
+                excelParams.getContextVar().forEach((key, value) -> {
+                    context.putVar(key, value);
+                });
                 JxlsHelper.getInstance().processTemplate(is, os, context);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
