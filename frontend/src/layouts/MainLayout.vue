@@ -49,6 +49,11 @@ const linksList: EssentialLinkProps[] = [
     icon: 'attach_money',
     link: '/salary',
   },
+  {
+    title: '車用結帳單',
+    icon: 'drive_eta',
+    link: '/orderer_checkout',
+  },
 ];
 
 const leftDrawerOpen = ref(false);
