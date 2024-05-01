@@ -45,28 +45,34 @@ public class JXLSExcelUtil {
 
    public static boolean read() throws Exception {
         String xmlConfig = "excelReader/BusinessDataReader.xml";
-        InputStream in = JXLSExcelUtil.class.getClassLoader().getResourceAsStream(xmlConfig);
-        if (in == null) {
-           throw new Exception("配置文件未找到：" + xmlConfig);
-        }
-        InputStream inputXML = new BufferedInputStream(in);
-        XLSReader mainReader = ReaderBuilder.buildFromXML(inputXML);
+        XLSReader mainReader = null;
+        try(InputStream inputXML = new BufferedInputStream(JXLSExcelUtil.class.getClassLoader().getResourceAsStream(xmlConfig))){
+            if (inputXML == null) {
+                throw new Exception("讀取配置文件失敗：" + xmlConfig);
+            }
 
+            mainReader = ReaderBuilder.buildFromXML(inputXML);
 
-        String dataXLS = "D:/test456.xlsx";
-        InputStream inputXLS = new FileInputStream(dataXLS);
-        if (inputXLS == null) {
-           throw new Exception("要讀取的文件未找到：" + dataXLS);
+            try(InputStream inputXLS = new BufferedInputStream(new FileInputStream("D:/test456.xlsx"))){
+                if (inputXLS == null) {
+                    throw new Exception("讀取excel失敗：" + "D:/test456.xlsx");
+                }
+                List<ExcelDataTest> list = new ArrayList<>();
+                Map<String, Object> beans = new HashMap<>();
+                beans.put("dataList", list);
+                XLSReadStatus readStatus = mainReader.read(inputXLS, beans);
+                for (ExcelDataTest data : list) {
+                    System.out.println("讀到了 === " + data.toString());
+                }
+                return readStatus.isStatusOK();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        InputStream inputExcelStream = new BufferedInputStream(inputXLS);
-        List<ExcelDataTest> list = new ArrayList<>();
-        Map<String, Object> beans = new HashMap<>();
-        beans.put("dataList", list);
-        XLSReadStatus readStatus = mainReader.read(inputExcelStream, beans);
-        for (ExcelDataTest data : list) {
-           System.out.println("讀到了 === " + data.toString());
-        }
-       return readStatus.isStatusOK();
       }
 
     /**
