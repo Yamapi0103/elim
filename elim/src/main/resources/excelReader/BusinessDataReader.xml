@@ -24,13 +24,19 @@
         <loop startRow="1" endRow="1" items="dataList" var="data"
               varType="com.example.elim.dto.ExcelDataTest">
             <section startRow="1" endRow="1">
-                <mapping row="2" col="0">data.column1</mapping>
-                <mapping row="2" col="1">data.column2</mapping>
-                <mapping row="2" col="2">data.column3</mapping>
+                <mapping row="2" col="0">data.date</mapping>
+                <mapping row="2" col="1">data.orderer</mapping>
+                <mapping row="2" col="2">data.route</mapping>
+                <mapping row="2" col="3">data.carNo</mapping>
+                <mapping row="2" col="4">data.fare</mapping>
+                <mapping row="2" col="5">data.extraCash</mapping>
+                <mapping row="2" col="6">data.finalOrder</mapping>
+                <mapping row="2" col="7">data.taxes</mapping>
             </section>
             <loopbreakcondition>
                 <rowcheck offset="0">
-                    <cellcheck offset="0">Employee Payment Totals:</cellcheck>
+<!--                    <cellcheck offset="0"></cellcheck>-->
+                    <cellcheck offset="0">讀資料結束</cellcheck>
                 </rowcheck>
             </loopbreakcondition>
         </loop>

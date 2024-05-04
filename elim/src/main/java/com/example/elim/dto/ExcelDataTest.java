@@ -2,31 +2,77 @@ package com.example.elim.dto;
 
 public class ExcelDataTest {
 
-    private String column1;
-    private String column2;
-    private String column3;
+    private String date;
+    private String orderer;
+    private String route;
+    private String carNo;
+    private String fare;
+    private String extraCash;
+    private String finalOrder;
 
-    public String getColumn1() {
-        return column1;
+    private String taxes;
+
+    public String getDate() {
+        return date;
     }
 
-    public void setColumn1(String column1) {
-        this.column1 = column1;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getColumn2() {
-        return column2;
+    public String getOrderer() {
+        return orderer;
     }
 
-    public void setColumn2(String column2) {
-        this.column2 = column2;
+    public void setOrderer(String orderer) {
+        this.orderer = orderer;
     }
 
-    public String getColumn3() {
-        return column3;
+    public String getRoute() {
+        return route;
     }
 
-    public void setColumn3(String column3) {
-        this.column3 = column3;
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getCarNo() {
+        return carNo;
+    }
+
+    public void setCarNo(String carNo) {
+        this.carNo = carNo;
+    }
+
+    public String getFare() {
+        return fare;
+    }
+
+    public void setFare(String fare) {
+        this.fare = fare;
+    }
+
+    public String getExtraCash() {
+        return extraCash;
+    }
+
+    public void setExtraCash(String extraCash) {
+        this.extraCash = extraCash;
+    }
+
+    public String getFinalOrder() {
+        return finalOrder;
+    }
+
+    public void setFinalOrder(String finalOrder) {
+        this.finalOrder = finalOrder;
+    }
+
+    public String getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(String taxes) {
+        this.taxes = taxes;
     }
 }

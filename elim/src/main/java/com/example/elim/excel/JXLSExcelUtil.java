@@ -43,7 +43,8 @@ public class JXLSExcelUtil {
         }
     }
 
-   public static boolean read() throws Exception {
+   public static List<ExcelDataTest> read() throws Exception {
+        List emptyList = new ArrayList<ExcelDataTest>();
         String xmlConfig = "excelReader/BusinessDataReader.xml";
         XLSReader mainReader = null;
         try(InputStream inputXML = new BufferedInputStream(JXLSExcelUtil.class.getClassLoader().getResourceAsStream(xmlConfig))){
@@ -57,14 +58,15 @@ public class JXLSExcelUtil {
                 if (inputXLS == null) {
                     throw new Exception("讀取excel失敗：" + "D:/test456.xlsx");
                 }
-                List<ExcelDataTest> list = new ArrayList<>();
+                List<ExcelDataTest> dataList = new ArrayList<>();
                 Map<String, Object> beans = new HashMap<>();
-                beans.put("dataList", list);
+                beans.put("dataList", dataList);
                 XLSReadStatus readStatus = mainReader.read(inputXLS, beans);
-                for (ExcelDataTest data : list) {
+                for (ExcelDataTest data : dataList) {
                     System.out.println("讀到了 === " + data.toString());
                 }
-                return readStatus.isStatusOK();
+                return readStatus.isStatusOK() ? dataList : emptyList;
+
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {

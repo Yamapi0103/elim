@@ -26,5 +26,5 @@ public interface BusinessService {
 
     List<String> getOrdererOption();
 
-    String export(BusinessFilter filter);
+    List<Business> getExportData(BusinessFilter filter);
 }

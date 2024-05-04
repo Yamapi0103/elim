@@ -72,8 +72,4 @@ public class BusinessController {
         return businessService.getOrdererOption();
     }
 
-    @PostMapping("/export")
-    public String export(@Valid @RequestBody BusinessFilter filter){
-        return businessService.export(filter);
-    }
  }
