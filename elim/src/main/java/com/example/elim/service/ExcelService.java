@@ -9,5 +9,11 @@ public interface ExcelService {
 
     String export(BusinessFilter filter);
 
+    /**
+     * group by "Orderer"
+     * 匯出多份檔案
+     * @param dataList
+     * @return
+     */
     String exportOrdererMonthlyReports(List<ExcelDataTest> dataList);
 }

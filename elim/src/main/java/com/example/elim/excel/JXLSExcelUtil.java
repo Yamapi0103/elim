@@ -20,10 +20,8 @@ public class JXLSExcelUtil {
 
         System.out.println("匯出一份EXCEL");
 
-        String templateName = excelParams.getTemplateName();
-        String templatePath = "excelTemplates/" + templateName + ".xlsx";
-        //Context context = contextPutVar(excelParams.getContextVar());
-        File file = getFile(templateName);
+        String templatePath = "excelTemplates/" + excelParams.getTemplateName() + ".xlsx";
+        File file = getFile(excelParams.getFolderName(), excelParams.getFileName());
 
         try(InputStream is = getClass().getClassLoader()
                 .getResource(templatePath).openStream()) {
@@ -43,7 +41,7 @@ public class JXLSExcelUtil {
         }
     }
 
-   public static List<ExcelDataTest> read() throws Exception {
+   public static List<ExcelDataTest> readAllOrdererData() throws Exception {
         List emptyList = new ArrayList<ExcelDataTest>();
         String xmlConfig = "excelReader/BusinessDataReader.xml";
         XLSReader mainReader = null;
@@ -56,7 +54,7 @@ public class JXLSExcelUtil {
 
             try(InputStream inputXLS = new BufferedInputStream(new FileInputStream("D:/test456.xlsx"))){
                 if (inputXLS == null) {
-                    throw new Exception("讀取excel失敗：" + "D:/test456.xlsx");
+                    throw new Exception("讀取總調車人資料excel失敗：" + "D:/test456.xlsx");
                 }
                 List<ExcelDataTest> dataList = new ArrayList<>();
                 Map<String, Object> beans = new HashMap<>();
@@ -112,7 +110,7 @@ public class JXLSExcelUtil {
         return readStatus.isStatusOK();
     }
 
-    private File getFile(String fileName){
+    private File getFile(String folderName, String fileName){
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat ("yyyyMMddHHmmss");
         String getNowStr = sdf.format(now);
@@ -121,14 +119,16 @@ public class JXLSExcelUtil {
         String day = getNowStr.substring(6,8);
         String monthAndDay = getNowStr.substring(4,8);
         String timeStr = getNowStr.substring(8,14);
-        String folderPath = "D:/export/" + year + "/" + month + "/" + day;
+
+        // 資料夾路徑範例，D:/export/車用結帳單/202405
+        String folderPath = "D:/export/" + folderName + "/" + year + month;
 
         File folder = new File(folderPath);
         if(!folder.exists()){
             folder.mkdirs();
         }
         File file = new File(folderPath + "/" + fileName
-                + "_" + timeStr +".xlsx");
+                + "_" + getNowStr.substring(0,6) +".xlsx");
         return file;
     }
 

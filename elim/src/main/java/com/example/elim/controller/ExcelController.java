@@ -53,13 +53,14 @@ public class ExcelController {
     }
 
     /**
-     * 導入Excel數據
+     * 先導入Excel數據
+     * 後將數據分類後輸出多份檔案
      * @param "file"
      */
     @RequestMapping(value = "/read/export", method = RequestMethod.POST)
     public String importExcel2() {
         try {
-            List<ExcelDataTest> dataList = JXLSExcelUtil.read();
+            List<ExcelDataTest> dataList = JXLSExcelUtil.readAllOrdererData();
             if (CollectionUtils.isEmpty(dataList)) {
                 return "讀取檔案失敗";
             } else {

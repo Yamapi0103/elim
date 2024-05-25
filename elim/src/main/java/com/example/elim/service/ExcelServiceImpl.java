@@ -6,6 +6,7 @@ import com.example.elim.excel.ExcelFunParams;
 import com.example.elim.excel.JXLSExcelUtil;
 import com.example.elim.excel.reportOutputData.MonthSalaryStatistics;
 import com.example.elim.model.Business;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class ExcelServiceImpl implements ExcelService {
 
         if (reportType == 1) {    // 匯出總表
             excelParams.setTemplateName("BusinessList");
+            excelParams.setFolderName("總表");
             HashMap<String, Object> contextVarMap = new HashMap<>();
             contextVarMap.put("businessList", dataList);
             excelParams.setContextVar(contextVarMap);
@@ -61,6 +63,7 @@ public class ExcelServiceImpl implements ExcelService {
             contextVarMap.put("carNo", dataList.get(0).getCarNo());
             contextVarMap.put("sDate", dataList.get(0).getDate());
             excelParams.setTemplateName("MonthSalaryReport");
+            excelParams.setFolderName("薪資結帳單");
             excelParams.setContextVar(contextVarMap);
             excelUtils.exportDate(excelParams);
         } else if (reportType == 3) {    // 匯出用車結帳單
@@ -76,8 +79,11 @@ public class ExcelServiceImpl implements ExcelService {
                 .collect(Collectors.groupingBy(ExcelDataTest::getOrderer));
 
         ordererMap.forEach((key, value) -> {
+            if(StringUtils.equals("讀資料結束",key)) return;
             ExcelFunParams params = new ExcelFunParams();
             params.setTemplateName("OrdererMonthlyReport");
+            params.setFolderName("用車結帳單");
+            params.setFileName("用車結帳單_" + key);
             HashMap<String, Object> contextVarMap = new HashMap<>();
             contextVarMap.put("ordererList", value);
             params.setContextVar(contextVarMap);
@@ -85,6 +91,7 @@ public class ExcelServiceImpl implements ExcelService {
             myTask.run();
         });
 
-        return "匯出成功";
+        int fileCount = ordererMap.size() - 1 ;
+        return "匯出成功，共" + fileCount + "份檔案";
     }
 }
