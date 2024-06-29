@@ -86,6 +86,8 @@ public class ExcelServiceImpl implements ExcelService {
             params.setFileName("用車結帳單_" + key);
             HashMap<String, Object> contextVarMap = new HashMap<>();
             contextVarMap.put("ordererList", value);
+            contextVarMap.put("who", key);
+            contextVarMap.put("sDate", "11306");
             params.setContextVar(contextVarMap);
             ExportTask myTask = new ExportTask(params);
             myTask.run();

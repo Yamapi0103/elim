@@ -52,9 +52,9 @@ public class JXLSExcelUtil {
 
             mainReader = ReaderBuilder.buildFromXML(inputXML);
 
-            try(InputStream inputXLS = new BufferedInputStream(new FileInputStream("D:/test456.xlsx"))){
+            try(InputStream inputXLS = new BufferedInputStream(new FileInputStream("D:/車用結帳單上傳模板.xlsx"))){
                 if (inputXLS == null) {
-                    throw new Exception("讀取總調車人資料excel失敗：" + "D:/test456.xlsx");
+                    throw new Exception("讀取_車用結帳單上傳模板_失敗");
                 }
                 List<ExcelDataTest> dataList = new ArrayList<>();
                 Map<String, Object> beans = new HashMap<>();
